@@ -1,37 +1,29 @@
-package com.komeetta.datasource;
+package student.datasource;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
-/**
- * Class for managing the EntityManager instances for MariaDB.
- */
+// connection to MariaDB using JPA
 public class MariaDbJpaConnection {
 
+    // actually configure the connection based in the persistence.xml file
+    // singleton pattern
     private static EntityManagerFactory emf;
 
-    /**
-     * Initializes the EntityManagerFactory if not already initialized.
-     * Singleton pattern for EntityManagerFactory.
-     */
     private static synchronized void initializeFactory() {
         if (emf == null) {
-            emf = Persistence.createEntityManagerFactory("CompanyMariaDbUnit");
+            emf = Persistence.createEntityManagerFactory("DbSolutionsCourseMariaDbUnit");
         }
     }
 
-    /**
-     * Returns a new EntityManager instance.
-     */
+    // get the entity manager - the connection to the database and execute the queries
     public static EntityManager getInstance() {
-        initializeFactory(); // Ensure the factory is initialized
+        initializeFactory();
         return emf.createEntityManager();
     }
 
-    /**
-     * Closes the EntityManagerFactory.
-     */
+    // close the connection
     public static void closeFactory() {
         if (emf != null && emf.isOpen()) {
             emf.close();
